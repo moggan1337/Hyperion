@@ -1,0 +1,85 @@
+[package]
+name = "hyperion"
+version = "0.1.0"
+edition = "2021"
+authors = ["Hyperion Team"]
+license = "Apache-2.0"
+description = "Hyperion - Distributed SQL Query Engine"
+repository = "https://github.com/moggan1337/Hyperion"
+documentation = "https://docs.hyperion.dev"
+readme = "README.md"
+keywords = ["sql", "query-engine", "distributed", "analytics", "database"]
+categories = ["database", "data-processing", "distributed-systems"]
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.35", features = ["full", "sync", "rt-multi-thread"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Async traits
+async-trait = "0.1"
+
+# CLI
+clap = { version = "4.4", features = ["derive"] }
+
+# Logging
+env_logger = "0.10"
+log = "0.4"
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Networking
+bytes = "1.5"
+
+# Database drivers (for federation)
+# tokio-postgres = "0.7"
+# sqlx = { version = "0.7", features = ["runtime-tokio", "postgres"] }
+
+# Compression
+# lz4 = "1.24"
+# zstd = "0.12"
+
+# UUID generation
+uuid = { version = "1.6", features = ["v4", "serde"] }
+
+# Random
+rand = "0.8"
+
+# Hash maps (for HashMap with Hash impl)
+parking_lot = "0.12"
+
+[dev-dependencies]
+tokio-test = "0.4"
+proptest = "1.4"
+criterion = "0.5"
+
+[[bench]]
+name = "query_benchmark"
+harness = false
+
+[lib]
+name = "hyperion"
+path = "src/lib.rs"
+
+[[bin]]
+name = "hyperion"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.dev]
+opt-level = 0
+
+[profile.bench]
+inherits = "release"
