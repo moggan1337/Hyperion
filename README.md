@@ -691,3 +691,169 @@ Hyperion is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for de
 <p align="center">
   Built with ❤️ by the Hyperion Team
 </p>
+
+## Roadmap
+
+### v0.2.0 (Planned)
+- [ ] GPU acceleration for analytical operations
+- [ ] Adaptive query execution
+- [ ] Improved cost models
+- [ ] Additional data source connectors
+
+### v0.3.0 (Planned)
+- [ ] Streaming SQL support
+- [ ] ML inference integration
+- [ ] Materialized views
+- [ ] Query result caching
+
+### v1.0.0 (Target)
+- [ ] Production-ready stability
+- [ ] Comprehensive documentation
+- [ ] Performance benchmarking suite
+- [ ] Migration guides
+
+## Performance Tuning
+
+### Memory Configuration
+
+```toml
+[engine]
+memory_budget_mb = 4096  # Total memory budget for query execution
+broadcast_threshold_bytes = 10485760  # 10MB default
+
+[executor]
+num_threads = 8  # Number of execution threads
+chunk_size = 1024  # Processing chunk size
+```
+
+### Query Optimization Hints
+
+Hyperion supports query hints for advanced optimization control:
+
+```sql
+-- Force a specific join algorithm
+SELECT /*+ BROADCAST(t1) */ * 
+FROM large_table t1 
+JOIN small_table t2 ON t1.id = t2.id;
+
+-- Set parallelism
+SELECT /*+ PARALLEL(4) */ * FROM orders;
+
+-- Enable result caching
+SELECT /*+ CACHE */ * FROM products WHERE id = 1;
+```
+
+### Monitoring
+
+Query execution can be monitored using metrics:
+
+```rust
+// Access query metrics
+let result = engine.execute("SELECT * FROM large_table").await?;
+
+println!("Rows: {}", result.metrics.output_rows);
+println!("CPU Time: {}ms", result.metrics.cpu_time_ms);
+println!("Wall Time: {}ms", result.metrics.wall_time_ms);
+println!("Memory: {}MB", result.metrics.peak_memory_bytes / 1024 / 1024);
+println!("Spilled: {}MB", result.metrics.spilled_bytes / 1024 / 1024);
+```
+
+## API Reference
+
+### Engine Configuration
+
+```rust
+pub struct EngineConfig {
+    pub default_parallelism: usize,      // Default degree of parallelism
+    pub max_parallelism: usize,          // Maximum parallelism per query
+    pub memory_budget_mb: u64,           // Memory budget in MB
+    pub shuffle_partitions: usize,       // Number of shuffle partitions
+    pub broadcast_threshold_bytes: u64,   // Broadcast size threshold
+    pub enable_cbo: bool,                // Enable cost-based optimization
+    pub enable_columnar_execution: bool, // Enable vectorized execution
+    pub optimizer_timeout_ms: u64,       // Optimizer timeout
+}
+```
+
+### Query Execution Result
+
+```rust
+pub struct QueryResult {
+    pub batches: Vec<Row>,      // Result batches
+    pub metrics: QueryMetrics,  // Execution metrics
+}
+
+pub struct QueryMetrics {
+    pub total_rows: u64,           // Total input rows
+    pub output_rows: u64,          // Total output rows
+    pub spilled_bytes: u64,        // Bytes spilled to disk
+    pub peak_memory_bytes: u64,   // Peak memory usage
+    pub cpu_time_ms: u64,         // CPU time
+    pub wall_time_ms: u64,        // Wall clock time
+    pub shuffle_bytes: u64,        // Bytes shuffled
+    pub scan_bytes: u64,           // Bytes scanned
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**1. Out of Memory Errors**
+```
+Solution: Reduce `memory_budget_mb` or increase parallelism to distribute load.
+```
+
+**2. Slow Query Performance**
+```
+Solution: Check query plan with EXPLAIN, ensure statistics are up to date.
+```
+
+**3. Connection Timeouts**
+```
+Solution: Increase `connection_timeout_ms` or check network connectivity.
+```
+
+## Community
+
+Join our community:
+- GitHub Discussions
+- Discord Server
+- Stack Overflow (tag: hyperion-sql)
+
+## Citation
+
+If you use Hyperion in your research, please cite:
+
+```bibtex
+@software{hyperion2024,
+  title = {Hyperion: Distributed SQL Query Engine},
+  author = {Hyperion Team},
+  year = {2024},
+  url = {https://github.com/moggan1337/Hyperion}
+}
+```
+
+## Acknowledgments
+
+Hyperion builds upon many excellent open-source projects:
+- Apache Arrow for columnar format
+- DataFusion for query execution ideas
+- Apache Calcite for SQL parsing concepts
+- TiDB for distributed transaction patterns
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
+
+## Support
+
+For issues and questions:
+- GitHub Issues: https://github.com/moggan1337/Hyperion/issues
+- Email: support@hyperion.dev
+
+---
+
+<p align="center">
+  Built with ❤️ by the Hyperion Team
+</p>
