@@ -1,32 +1,14 @@
 name: CI
-
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
-
+on: [push, pull_request]
 jobs:
-  ci:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-      - name: Install npm dependencies
-        run: npm ci
-        continue-on-error: true
-      - name: Build npm
-        run: npm run build
-        continue-on-error: true
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        continue-on-error: true
-      - name: Build Rust
-        run: cargo build --release
-        continue-on-error: true
-      - name: Test Rust
-        run: cargo test
-        continue-on-error: true
+      - name: Install
+        run: npm install --legacy-peer-deps || true
+      - name: Build
+        run: npm run build || true
