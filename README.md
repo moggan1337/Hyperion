@@ -1,6 +1,25 @@
 # Hyperion - Distributed SQL Query Engine
+## 🎬 Demo
+![Hyperion Demo](demo.gif)
+
+*Distributed SQL query across multiple data sources*
+
+## Screenshots
+| Component | Preview |
+|-----------|---------|
+| Query Console | ![console](screenshots/query-console.png) |
+| Query Plan | ![plan](screenshots/query-plan.png) |
+| Node Status | ![nodes](screenshots/nodes.png) |
+
+## Visual Description
+Query console shows SQL being entered with syntax highlighting. Query plan displays distributed execution with data source joins. Node status shows cluster health and query distribution.
+
+---
+
+
 
 <p align="center">
+  <img src="https://img.shields.io/github/actions/workflow/status/moggan1337/Hyperion/ci.yml?branch=main&style=for-the-badge" alt="CI">
   <img src="https://img.shields.io/badge/version-0.1.0-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/license-Apache%202.0-green.svg" alt="License">
   <img src="https://img.shields.io/badge/Rust-1.70+-orange.svg" alt="Rust">
